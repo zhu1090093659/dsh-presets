@@ -1,0 +1,9 @@
+node_modules/
+*.tsbuildinfo
+*.log
+.DS_Store
+
+# lib/ is committed on purpose: package main/exports/files all point at those
+# bytes, so a consumer that installs the package without rebuilding gets what
+# the repository carries. `.github/workflows/ci.yml` rebuilds and fails when the
+# committed output no longer matches src/.

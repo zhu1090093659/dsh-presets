@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: preset catalog gate, typecheck, test and build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v5
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --ignore-scripts
+      - name: Build
+        run: pnpm build
+      - name: Committed lib matches the sources
+        run: git diff --exit-code -- lib
+      - name: Preset catalog gate
+        run: pnpm preset:check
+      - name: Script tests
+        run: node --test scripts/preset-catalog.test.mjs
+      - name: Typecheck
+        run: pnpm typecheck
+      - name: Tests
+        run: pnpm test

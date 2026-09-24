@@ -1,0 +1,43 @@
+{
+  "comment": true,
+  "defaultRoute": {
+    "label": "Default owner: preset-center source, docs and repository maintenance",
+    "reviewers": [
+      "zhu1090093659"
+    ],
+    "assignees": [
+      "zhu1090093659"
+    ]
+  },
+  "routes": [
+    {
+      "name": "preset-content",
+      "label": "Preset contribution (presets/<id>/ and catalog.json)",
+      "paths": [
+        "presets/**"
+      ],
+      "reviewers": [
+        "zhu1090093659"
+      ],
+      "assignees": [
+        "zhu1090093659"
+      ]
+    },
+    {
+      "name": "plugin-source",
+      "label": "Preset-center plugin source (src/, scripts/, tests/, shared/)",
+      "paths": [
+        "src/**",
+        "scripts/**",
+        "tests/**",
+        "shared/**"
+      ],
+      "reviewers": [
+        "zhu1090093659"
+      ],
+      "assignees": [
+        "zhu1090093659"
+      ]
+    }
+  ]
+}
