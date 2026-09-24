@@ -1,7 +1,7 @@
 {
   "name": "@linxin666/dsh-client-ui-preset-center",
   "description": "Community agent-preset manager: the Workshop's Presets panel and the host library that installs, declares, disables and uninstalls presets downloaded from dsh-market.com, keeping a downloaded composition inert until the plugin declares it to the agent-preset registry.",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "publishConfig": {
     "access": "public"
   },
