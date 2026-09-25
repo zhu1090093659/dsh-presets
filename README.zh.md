@@ -15,6 +15,16 @@ DSH Web GUI 的社区 agent 预设管理器：创意工坊的**预设**面板，
 - 拒绝 id 已被其它声明占用的预设（注册表会拒绝重复 id，声明看起来成功却毫无效果），也拒绝停用或卸载注册表当前默认值指向的预设（默认值指向不存在的预设会让每个新会话创建失败）。
 - 每次读取状态都校验市场 provenance：逐文件 sha256 锚定 `https://dsh-market.com`，因此本地改动过的预设会被标为「本地已修改」，更新也绝不静默覆盖它。
 
+## 人气预设
+
+[dsh-market.com](https://dsh-market.com) 创意工坊预设目录里人气最高的三个预设，按网站默认的「按人气」排序——三者都由本仓的 [`presets/`](presets/) 发布：
+
+| 预设 | 作者 | 剧情 |
+|---|---|---|
+| [角色扮演 · 乔柚柚](https://dsh-market.com/#preset:roleplay-qiaoyouyou)（`roleplay-qiaoyouyou`） | dongshuyan | 与民办幼儿园老师乔柚柚对话：活泼开朗，带班哄孩子一把好手。全年龄向沉浸式角色扮演 |
+| [角色扮演 · 谢晚舟](https://dsh-market.com/#preset:roleplay-xiewanzhou)（`roleplay-xiewanzhou`） | dongshuyan | 与互联网公司后端工程师谢晚舟对话：上班理性话少，下班宅家看番。全年龄向沉浸式角色扮演 |
+| [角色扮演 · 苏绵绵](https://dsh-market.com/#preset:roleplay-sumianmian)（`roleplay-sumianmian`） | dongshuyan | 与重点大学经管系大一学生苏绵绵对话：呆萌的富家千金，从小被保护得很好。全年龄向沉浸式角色扮演 |
+
 ## 安装
 
 ```sh

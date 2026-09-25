@@ -15,6 +15,16 @@ This repository owns both the plugin and the community preset catalog in [`prese
 - Refuses a preset whose id another declaration already supplies (the registry rejects a duplicate, so declaring would look like a successful install and do nothing), and refuses to disable or uninstall the preset the registry's default names (a default naming a missing preset fails every new session).
 - Verifies market provenance on every state read: per-file sha256 pinned to `https://dsh-market.com`, so a locally edited preset is reported as modified and an update never silently overwrites it.
 
+## Most popular presets
+
+The three most-liked presets in the Workshop's preset catalog on [dsh-market.com](https://dsh-market.com), in the site's default popularity order — all of them published from [`presets/`](presets/) in this repository:
+
+| Preset | Author | Scenario |
+|---|---|---|
+| [Roleplay · Qiao Youyou](https://dsh-market.com/#preset:roleplay-qiaoyouyou) (`roleplay-qiaoyouyou`) | dongshuyan | Immersive all-ages roleplay with Qiao Youyou, a kindergarten teacher |
+| [Roleplay · Xie Wanzhou](https://dsh-market.com/#preset:roleplay-xiewanzhou) (`roleplay-xiewanzhou`) | dongshuyan | Immersive all-ages roleplay with Xie Wanzhou, a backend engineer at an internet company |
+| [Roleplay · Su Mianmian](https://dsh-market.com/#preset:roleplay-sumianmian) (`roleplay-sumianmian`) | dongshuyan | Immersive all-ages roleplay with Su Mianmian, a coddled first-year business student |
+
 ## Install
 
 ```sh
