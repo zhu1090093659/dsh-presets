@@ -1,6 +1,19 @@
-# @linxin666/dsh-client-ui-preset-center
+# dsh-presets · DeepSeek Harness (DSH) 社区 Agent 预设中心与提示词工坊
 
 [English](README.md) | 中文
+
+<p align="center">
+  <img src="https://img.shields.io/npm/v/@linxin666/dsh-client-ui-preset-center?style=flat-square" alt="Version">
+  &nbsp;
+  <img src="https://img.shields.io/badge/DSH-%3E%3D0.2.0--rc.2-4c6ef5?style=flat-square&amp;labelColor=454a54" alt="DSH">
+  &nbsp;
+  <img src="https://img.shields.io/badge/license-Apache--2.0-blue?style=flat-square" alt="License">
+</p>
+
+<p align="center">
+  <strong>DeepSeek Harness（DSH）官方 Web GUI 与桌面客户端社区 Agent 预设管理与分发中心</strong><br>
+  <em>智能体预设库 · 系统提示词工坊 · 创意工坊一键安装 · 动态声明加载 · 沉浸式角色扮演</em>
+</p>
 
 DSH Web GUI 的社区 agent 预设管理器：创意工坊的**预设**面板，以及负责安装、声明、停用、卸载从 [dsh-market.com](https://dsh-market.com) 下载的预设的 host 侧库。预设只有被本插件**声明**进 agent-preset 注册表后才会出现在**设置 → Agent 预设**；其余都留在创意工坊。
 

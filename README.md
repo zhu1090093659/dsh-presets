@@ -1,6 +1,19 @@
-# @linxin666/dsh-client-ui-preset-center
+# dsh-presets · Community Agent Presets & Prompt Workshop for DeepSeek Harness (DSH)
 
 English | [中文](README.zh.md)
+
+<p align="center">
+  <img src="https://img.shields.io/npm/v/@linxin666/dsh-client-ui-preset-center?style=flat-square" alt="Version">
+  &nbsp;
+  <img src="https://img.shields.io/badge/DSH-%3E%3D0.2.0--rc.2-4c6ef5?style=flat-square&amp;labelColor=454a54" alt="DSH">
+  &nbsp;
+  <img src="https://img.shields.io/badge/license-Apache--2.0-blue?style=flat-square" alt="License">
+</p>
+
+<p align="center">
+  <strong>Community Agent Preset Manager & Prompt Workshop for DeepSeek Harness (DSH)</strong><br>
+  <em>Agent Preset Catalog · System Prompt Workshop · One-Click Install · Dynamic Registration · Roleplay</em>
+</p>
 
 Community agent-preset manager for the DSH Web GUI: the Workshop's **Presets** panel and the host library that installs, declares, disables and uninstalls presets downloaded from [dsh-market.com](https://dsh-market.com). A preset is only listed under **Settings → Agent presets** once this plugin declares it to the agent-preset registry; everything else stays in the Workshop.
 
