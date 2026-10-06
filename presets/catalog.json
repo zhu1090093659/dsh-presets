@@ -478,5 +478,20 @@
     "category": "roleplay",
     "rank": 32,
     "repo": "https://github.com/dongshuyan/Awesome-Prompts"
+  },
+  {
+    "id": "local-lite",
+    "nameEn": "Local Simplified",
+    "descriptionEn": "A minimum-prompt agent preset for local models with a short context window: a few lines of system prompt, a tool surface narrowed to file, search, web and shell access, and a standing per-request cost cut from about 9,288 to about 2,004 tokens.",
+    "author": "Xeraph627",
+    "version": "1.0.0",
+    "tags": [
+      "minimal",
+      "local-model",
+      "context-window",
+      "coding"
+    ],
+    "rank": 33,
+    "repo": "https://github.com/Xeraph627/local-lite"
   }
 ]

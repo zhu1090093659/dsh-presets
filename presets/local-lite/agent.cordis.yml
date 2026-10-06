@@ -1,0 +1,134 @@
+# 本地简化（local-lite）：为上下文窗口很短的本地模型准备的 Agent 组合。
+#
+# 设计目标只有一个数字：每次请求在用户说话之前要花掉多少 token。它由三部分构成，
+# 这个文件同时处理其中两部分（第三部分是宿主层的全局工具，见文件末尾）。
+#
+# 1. 系统提示词。`persona` 用 `complete: true` 把那段 prefix 变成**整个**系统提示词：
+#    harness 身份、web-surface、工具指南、文件引用、结构化输出等段落一律不再注入；
+#    `includeRuntimeContext: false` 同时关掉 sandbox / approval 那几条 user-role
+#    运行时快照。提示词只有 270 字符，写成中文，因为这类模型通常在中文上最强。
+#
+# 2. 工具面。schema 每次请求都要重发，所以提示词变小之后，工具面成为主要开销。
+#    这里只挂 7 个工具（读写文件、检索、联网、终端、后台任务），并改用**持久** shell：
+#    持久行支持覆写 `description`（自带默认值很长），它的 schema 也只有一个 command
+#    参数、没有 sandbox 升级字段。输出上限在工具层收窄——出厂默认的
+#    `fetchMaxOutputChars` 是 200,000 字符，比本地模型的整个窗口还大。
+#
+# 3. 继承来的全局工具。宿主层挂载的工具对每个 agent 都可见，与预设无关；在作者的
+#    机器上实测有 19 个工具，其中 6 个 ssh_* 与 load_workspace_dependencies 与本预设
+#    无关却占了约 1,249 token。`tool-surface` 行用 ctx.tools.restrict() 把它们从这个
+#    预设的 scope 上摘掉，名单从实时全局视图**算出**而非写死（restrict() 遇到未知
+#    工具名会抛错，写死的名单一旦 profile 变化就会反过来让预设挂不上）。
+#
+# 实测（Windows / lm-studio qwen3.5-9b 32k 窗口）：系统提示词 186 token、
+# 工具 schema 约 1,818 token，合计约 2,004 token，相比标准预设的约 9,288 降低 78%。
+#
+# 不带 plan 模式：它的 plan:policy 段落约 1,000 token 常驻系统提示词且无法缩短；
+# 而且 `complete: true` 的 persona 与它会构成两个 complete 段，assembly 会直接失败。
+#
+# 保留 compaction-basic：短上下文正是要设计的失效场景，自动压缩必须能工作。
+# service 行（terminals / compaction）必须坐在带 isolate realm 的 group 内，否则会
+# 发布到 root realm，与其他预设的同名服务冲突。
+
+- id: persona
+  name: '@deepseek-ai/dsh-persona'
+  config:
+    complete: true
+    includeRuntimeContext: false
+    prefix: |-
+      你是本地精简模式的编码助手，工作目录 {{cwd}}。
+
+      规则：
+      - 先读再改。修改文件前先读取它；不确定就先查，不要猜。
+      - 用工具动手，不要空谈。需要事实就 read/grep/glob/web_search；需要执行就 pwsh。
+      - 保持简短。一次解决一件事，回答用要点，不要复述已知内容。
+      - 改了代码要验证；有失败就修到通过，或者如实说明卡在哪里。
+      - 不要输出大段日志：命令自己过滤（Select-String、-First、-Tail）。
+      - 项目里有 AGENTS.md 或 README 时，先读它。
+
+- id: tool-fs
+  name: '@deepseek-ai/dsh-tool-fs'
+  config:
+    readLimit: 1200
+
+- id: tool-fs-search
+  name: '@deepseek-ai/dsh-tool-fs-search'
+  config:
+    sampleOverCapGlobResults: false
+
+- id: tool-web
+  name: '@deepseek-ai/dsh-tool-web'
+  config:
+    searchMaxResults: 5
+    searchMaxQueries: 2
+    fetchMaxOutputChars: 24000
+
+- id: shell
+  name: cordis:group
+  group: true
+  isolate:
+    terminals: true
+  config:
+    - id: pty
+      name: '@deepseek-ai/dsh-terminal'
+
+    - id: terminal-bash
+      name: '@deepseek-ai/dsh-terminal-bash'
+      disabled: !!js process.platform === 'win32'
+
+    - id: terminal-pwsh
+      name: '@deepseek-ai/dsh-terminal-bash'
+      disabled: !!js process.platform !== 'win32'
+      config:
+        shellDialect: pwsh
+
+    - id: persistent-bash
+      name: '@deepseek-ai/dsh-tool-bash-persistent'
+      disabled: !!js process.platform === 'win32'
+      config:
+        timeoutMs: 300000
+        maxOutputChars: 12000
+        description: |-
+          在当前工作目录下运行 bash 命令并返回输出。
+          * 这是一个常驻 shell：cd、变量、导出在多次调用之间保持。
+          * 参数不需要 XML 转义；用 && 串联多条命令。
+          * 输出过多时自己过滤（grep/head/tail/wc），只读需要的范围。
+          * 长时间运行的命令用 & 放到后台，再用 job_output 读取。
+
+    - id: persistent-pwsh
+      name: '@deepseek-ai/dsh-tool-pwsh-persistent'
+      disabled: !!js process.platform !== 'win32'
+      config:
+        timeoutMs: 300000
+        maxOutputChars: 12000
+        description: |-
+          在当前工作目录下运行 PowerShell 命令并返回输出。
+          * 这是一个常驻 shell：cd、变量、函数在多次调用之间保持。
+          * 参数不需要 XML 转义；用原生 Windows 路径（C:\...），环境变量用 $env:NAME。
+          * 输出过多时自己过滤（Select-String/-First/-Tail），只读需要的范围。
+          * 长时间运行的命令用 Start-Process 或 & 放到后台，再用 job_output 读取。
+
+- id: tool-jobs
+  name: '@deepseek-ai/dsh-tool-jobs'
+
+# 预设目录内自带的插件文件。preset center 读取本文件时会把相对行名解析成
+# file:// URL（见 dsh-presets src/core/definition.ts 的 absolutizeRows），所以
+# `./tool-surface.mjs` 在用户机器上从预设自己的目录解析，无需任何 npm 安装。
+#
+# 想保留某个继承来的全局工具时，给这一行加一个 `keep` 列表，例如让模型在真正
+# 含糊时可以反问：
+#     keep:
+#       - ask_user_question
+# 不写 `keep` 就等同于空列表（插件的默认值）。注意这里不要写成 `keep: []`：
+# preset center 的 YAML 读取器不支持 flow 集合，`[]` 会让整份组合读取失败。
+- id: tool-surface
+  name: './tool-surface.mjs'
+
+- id: compaction
+  name: cordis:group
+  group: true
+  isolate:
+    compaction: true
+  config:
+    - id: compaction-basic
+      name: '@deepseek-ai/dsh-compaction-basic'
