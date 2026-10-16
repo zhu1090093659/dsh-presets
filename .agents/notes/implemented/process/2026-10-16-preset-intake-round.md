@@ -59,3 +59,58 @@ executable code, so this round's review of `tool-surface.mjs` sets the expectati
 that a preset review reads the JavaScript and not only the YAML. The two defects
 are cheap for the author to fix, and the required check can then be approved and
 run.
+
+
+## Second pass, 2026-10-16 (maintenance round)
+
+The required check was approved and now passes, and a full local replay of the
+gate on `main` plus this pull request agrees with it: install, typecheck, build,
+`preset-catalog --check` (OK, 33 presets) and 55 tests all succeed, and
+`git status --short -- lib` is clean. The two defects recorded above are fixed in
+the source: the `run_code` filtering happens before `ctx.tools.restrict()` is
+called, and the `tool-web` row now sets `fetch: false`.
+
+**What still blocks is the copy.** `preset.yml:3` and the catalog entry's
+`descriptionEn` both still say "about 2,004 tokens", which was the figure while
+`fetch` was on; the submission's own final measurement is 1,789
+(`agent.cordis.yml:26` and the body table). Those fields reach the store card and
+the roster, so the number has to be the measured one or carry its measurement
+premise. The same pass found the shadowing gain quoted as three different numbers
+across three files (1,151 / 1,249 / 1,366) and a body sentence claiming ten tools
+where its own list sums to eleven.
+
+**The evidence question was settled rather than deferred.** The template's
+"evidence from a real host install" was accepted through the substitute the author
+supplied - preset-center state reads plus a bundle row declaring the preset - and
+the Workshop install path is explicitly deferred to after the catalog entry
+exists. That is a structural limit rather than a concession: a preset cannot be
+installed from the store before it has been merged, so requiring that log
+pre-merge would block every first submission equally.
+
+## Decision
+
+Request changes, scoped to copy and consistency rather than code. Also asked:
+drop `'web_fetch'` from the surface's `ownTools` list, or say why it stays, since
+this preset no longer registers it and a host that still mounts the fetch provider
+would keep it on the wire.
+
+## Alternatives considered
+
+**Approve, and let the store show 2,004 until someone notices.** Once a number is
+baked into the market artifacts, correcting it costs a release.
+
+**Require the real-host install log before merging.** It cannot be produced for a
+preset that is not in the catalog yet, which makes the requirement unsatisfiable
+rather than strict.
+
+**Treat the three different gain figures as cosmetic.** They are the same quantity,
+and the next reader cannot tell which is current; that is the condition that
+produced this round's defects in the first place.
+
+## Consequences
+
+The catalog stays at 32 entries. This remains the first preset to ship an
+executable `.mjs` and it still has no coverage in this repository - the gate only
+checks directories, the catalog and single-line `preset.yml` fields, and the
+author's six-case suite lives in a sibling repository. Whether that file deserves
+a check here is a separate question and is not being settled in this round.
