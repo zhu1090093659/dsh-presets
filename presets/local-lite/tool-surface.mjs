@@ -55,14 +55,14 @@
  * ONE matched pair of sessions — both with `web_fetch` still enabled, byte-identical
  * prompts, the same host surface — differing only in whether this row ran:
  *
- *   this row running      2,004 tokens/request  (186-char prompt + 1,818, 13 tools)
+ *   this row running      2,004 tokens/request  (186-token prompt + 1,818, 13 tools)
  *   this row not running  3,155 tokens/request  (same prompt + 2,969, 19 tools)
  *   difference            1,151 tokens          what the mask removed on that host
  *
  * That 1,151 is the host's six `ssh_*` controls plus
  * `load_workspace_dependencies`, and it is the only subtraction these two sessions
  * support. The preset's own standing cost is a separate figure, and the stable
- * one: 1,789 tokens per request with `web_fetch` off (190-char prompt + 1,599,
+ * one: 1,789 tokens per request with `web_fetch` off (190-token prompt + 1,599,
  * 11 tools). Do not subtract the pair and call the result the preset's cost, and
  * do not pair 1,151 with a per-tool total quoted elsewhere — only a difference
  * between two sessions describes a saving.
