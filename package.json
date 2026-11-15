@@ -12,6 +12,8 @@
     ".": "./lib/index.js",
     "./client": "./lib/client.js",
     "./src/*": "./src/*",
+    "./locale/en.json": "./locale/en.json",
+    "./locale/zh.json": "./locale/zh.json",
     "./package.json": "./package.json"
   },
   "dsh": {
@@ -72,6 +74,7 @@
   "files": [
     "lib",
     "cordis.patch.yml",
+    "locale",
     "icon.svg"
   ],
   "repository": {
