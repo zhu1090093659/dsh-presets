@@ -274,6 +274,20 @@ describe('preset-center routes', () => {
     expect((body.profile as { plugins: string[] }).plugins).toEqual(['@deepseek-ai/dsh-persona'])
     expect((await call('/api/preset-center/composition?id=ghost')).status).toBe(404)
   })
+
+  it('host webserver accepts every preset-center route under its own loopback guard', () => {
+    // Given the route table the preset center registers with the host webserver
+    const declarations = new PresetDeclarations(() => registry)
+    const routes = makePresetCenterRoutes({ dshHome: home, registry: () => registry, declarations })
+
+    // When each route's auth policy is inspected
+    // Then every route explicitly opts into anonymous so the host default auth
+    // gate does not block loopback calls before the plugin's own guard runs.
+    expect(routes.length).toBeGreaterThan(0)
+    for (const route of routes) {
+      expect(route.auth, route.path).toBe('anonymous')
+    }
+  })
 })
 
 /** Send one request through a freshly built route list (for per-test seams). */
