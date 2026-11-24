@@ -298,10 +298,13 @@ export function makePresetCenterRoutes(deps: PresetCenterRouteDeps = {}): WebRou
   })
 
   // guardedHandler consumes rejections and returns undefined; the wrapper
-  // narrows that to the void signature WebRoute declares.
+  // narrows that to the void signature WebRoute declares. Every preset-center
+  // endpoint enforces its own loopback-only guard, so opt out of the host
+  // webserver's default authenticated gate explicitly.
   const route = (path: string, handler: (req: IncomingMessage, res: ServerResponse) => unknown): WebRoute => ({
     kind: 'exact',
     path,
+    auth: 'anonymous',
     handler: (req, res) => { void handler(req, res) },
   })
 
