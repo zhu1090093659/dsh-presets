@@ -9,14 +9,14 @@
 import type { Context as ClientContext } from '@deepseek-ai/cordis'
 import type {} from '@deepseek-ai/dsh-client-locale/client'
 import type {} from '@deepseek-ai/dsh-client-ui-renderer/client'
-import type {} from '@deepseek-ai/dsh-client-ui-slots'
+import type {} from '@deepseek-ai/dsh-client-ui-slots/client'
 import { PresetPanel, type WorkshopPanelKeyProps, type WorkshopPanelOwnerProps } from './PresetPanel.tsx'
 import { NS, en, zh, type PresetCenterKey } from './locales.ts'
 
 export type { PresetPanelProps, WorkshopPanelKeyProps, WorkshopPanelOwnerProps, WorkshopPresetRecord } from './PresetPanel.tsx'
 export { NS } from './locales.ts'
 
-declare module '@deepseek-ai/dsh-client-ui-slots' {
+declare module '@deepseek-ai/dsh-client-ui-slots/client' {
   interface LocaleNamespaceMap {
     /** Preset panel copy. */
     'dsh-web-ui-preset-center': PresetCenterKey

@@ -330,7 +330,7 @@ function refusalForProtected(registry: PresetRegistry | undefined, id: string): 
 function defaultIdOf(registry: PresetRegistry | undefined): string | null {
   if (registry === undefined) return null
   try {
-    return registry.defaultId
+    return registry.defaultId ?? null
   } catch {
     return null
   }

@@ -169,6 +169,9 @@ const ownTools = new Set([
  */
 function readGlobalToolNames(ctx) {
   try {
+    if (typeof ctx.tools?.getAll === 'function') {
+      return ctx.tools.getAll().map((tool) => tool.name)
+    }
     return ctx.tools.schemas().map((schema) => schema.name)
   } catch (error) {
     ctx.logger?.warn?.(`tool-surface: could not read the global tool view (${error.message})`)

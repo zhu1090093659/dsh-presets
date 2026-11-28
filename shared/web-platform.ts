@@ -1,11 +1,10 @@
 /**
  * Shared browser platform modules. Seeding, bundling externals, and Vite
  * aliases consume this list so their module identities cannot drift.
- * Mirrors the shell's frozen module table (dsh-web-frontend staticModules,
- * verified against the 0.2.3-alpha.2 cohort dist bundle
- * (dsh-web-frontend/dist/assets/index-*.js, the `staticModules` table): react,
- * react/jsx-runtime, react-dom, react-dom/client, cordis, zod,
- * @tanstack/react-virtual, dsh-client-store, dsh-client-ui-slots,
+ * Mirrors the shell's module table (verified against the 0.2.3-alpha.3 cohort
+ * `packages/client/web/src/platform.ts`: shell-seeded react, react/jsx-runtime,
+ * react-dom, react-dom/client, cordis, zod, @tanstack/react-virtual, static
+ * dsh-client-store, plus immediately dynamic plugin rows dsh-client-ui-slots,
  * dsh-client-ui-primitives, dsh-client-ui-dockkit).
  * @module dsh-web/shared/web-platform
  */
