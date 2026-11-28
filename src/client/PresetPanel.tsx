@@ -12,8 +12,8 @@
  */
 
 import { useEffect, useState, type ReactNode } from 'react'
-import { Button, Modal } from '@deepseek-ai/dsh-client-ui-primitives'
-import type { PropsLocale } from '@deepseek-ai/dsh-client-ui-slots'
+import { Button, Modal } from '@deepseek-ai/dsh-client-ui-primitives/client'
+import type { PropsLocale } from '@deepseek-ai/dsh-client-ui-slots/client'
 import { NS, type PresetCenterKey } from './locales.ts'
 import css from './preset-center.module.css'
 

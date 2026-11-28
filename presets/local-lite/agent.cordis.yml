@@ -78,6 +78,9 @@
   name: '@deepseek-ai/dsh-tool-fs'
   config:
     readLimit: 1200
+    # 0.2.3-alpha.3 起 applyPatch 默认跟随 edit 开启；本地小窗口预设显式关闭，
+    # 避免额外注入 apply_patch 的工具 schema，保持原有 11 工具面与预算。
+    applyPatch: false
 
 - id: tool-fs-search
   name: '@deepseek-ai/dsh-tool-fs-search'
